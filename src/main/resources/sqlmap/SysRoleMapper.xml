@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wsy.webseed.dao.SysRoleMapper">
+    <insert id="save" parameterType="com.wsy.webseed.domain.SysRoleVo">
+        insert into sys_role (name) VALUES (#{name})
+    </insert>
+
+    <update id="edit" parameterType="com.wsy.webseed.domain.SysRoleVo">
+        update sys_role set name = #{name} where id = #{id}
+    </update>
+
+    <delete id="del" parameterType="long">
+        delete from sys_role where id = #{id}
+    </delete>
+
+    <select id="query" resultType="com.wsy.webseed.domain.SysRoleVo" parameterType="map">
+        select id,name FROM sys_role where 1=1
+        <if test="id != null"> and id = #{id}</if>
+        <if test="name != null"> and name = #{name}</if>
+        order by id
+    </select>
+</mapper>

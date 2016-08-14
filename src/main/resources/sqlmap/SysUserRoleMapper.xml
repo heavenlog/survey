@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wsy.webseed.dao.SysUserRoleMapper">
+    <resultMap id="user" type="com.wsy.webseed.domain.SysUserVo">
+        <result property="loginName" column="login_name"/>
+        <result property="password" column="password"/>
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <insert id="save" parameterType="com.wsy.webseed.domain.SysUserRoleVo">
+        insert into sys_user_role (user_id,role_id) VALUES (#{userId},#{roleId})
+    </insert>
+    <select id="queryByRoleId" resultMap="user" parameterType="long">
+        select a.* from sys_user a,sys_user_role b where a.id = b.user_id and b.role_id = #{roleId}
+    </select>
+    <select id="queryByUserId" resultType="com.wsy.webseed.domain.SysRoleVo">
+        select a.id,a.name from sys_role a,sys_user_role b where a.id = b.role_id and b.user_id = #{userId}
+    </select>
+</mapper>
