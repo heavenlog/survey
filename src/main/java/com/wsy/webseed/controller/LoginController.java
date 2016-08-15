@@ -1,11 +1,7 @@
 package com.wsy.webseed.controller;
 
-import com.wsy.webseed.service.RBACService;
+import com.wsy.webseed.service.SysUserService;
 import com.wsy.webseed.util.Operation;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +19,7 @@ public class LoginController {
     private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private RBACService rbacService;
+    private SysUserService sysUserService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String loginIn() {
@@ -32,32 +28,20 @@ public class LoginController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
     @ResponseBody
-    public String login(HttpServletRequest request) {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+    public String login(HttpServletRequest request, String loginName, String password) {
         String result = "";
-        final UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {
-
-            final Subject currentUser = SecurityUtils.getSubject();
-            currentUser.login(token);
-            if (currentUser.isAuthenticated()) {
+            if(sysUserService.login(loginName, password)) {
+                LOGGER.info("{} 登录成功", loginName);
                 result = Operation.result(Operation.successCode, "登录成功");
-                LOGGER.info("系统日志:[{}] 登录成功.", username);
             } else {
-                result = Operation.result(Operation.failCode, "登录失败");
-                LOGGER.warn("系统日志:[{}] 登录失败.", username);
-                token.clear();
+                LOGGER.warn("系统日志:[{}] 登录失败.用户名和密码不匹配", loginName);
+                result = Operation.result(Operation.failCode, "登录失败.用户名和密码不匹配");
             }
-
-        } catch (AuthenticationException e) {
-            result = Operation.result(Operation.failCode, "用户名或密码错误");
-            LOGGER.warn("系统日志:[{}] 登录失败.", username);
         } catch (Exception e) {
             LOGGER.error("登录服务不可用: {}", e);
             result = Operation.result(Operation.failCode, "登录服务不可用");
         }
-
         return result;
     }
 

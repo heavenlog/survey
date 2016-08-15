@@ -12,7 +12,6 @@
     <context:component-scan base-package="com.wsy.webseed.controller"/>
     <context:component-scan base-package="com.wsy.webseed.service"/>
     <context:component-scan base-package="com.wsy.webseed.dao"/>
-    <context:component-scan base-package="com.wsy.webseed.realms"/>
 
 
     <!-- 激活@Controller模式 -->

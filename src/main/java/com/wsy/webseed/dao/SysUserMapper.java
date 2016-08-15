@@ -20,24 +20,4 @@ public interface SysUserMapper extends ISqlMapper {
      * @return
      */
     public int save(SysUserVo sysUser);
-    
-    /**
-     * 修改SysUser
-     * @param user
-     * @return
-     */
-    public int upd(SysUserVo user);
-    
-    /**
-     * 根据id删除SysUser
-     * @param id
-     * @return
-     */
-    public int del(Long id);
-
-    /**
-     * 查询总记录数
-     * @return
-     */
-    public Integer queryCount();
 }
